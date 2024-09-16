@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './PublicarPedido.css';
 
 const PublicarPedido = () => {
@@ -152,6 +154,17 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    toast.success('Pedido publicado con éxito!', {
+      position: "top-right",
+      autoClose: 3000, // Cierra después de 3 segundos
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
     console.log("Datos del formulario:", formData);
     // Limpiar los campos después de enviar los datos
     setFormData({
@@ -328,6 +341,7 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <button type="submit">Publicar Pedido</button>
+      <ToastContainer />
     </form>
   );
 };
