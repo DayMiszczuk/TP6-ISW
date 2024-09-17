@@ -1,9 +1,18 @@
-.App {
-  background-color: #90E0EF;
-  color: #03045E;
-  font-size: 12px;
-  font-family: serif;
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
+
+/* Estilo del logo */
+
+/* Estilo del título */
+h1 {
+  font-size: 2rem;
+  color: #0077b6;
+}
+
 .form-container {
     background-color: #90E0EF;
     font-family: serif;
@@ -55,18 +64,21 @@
   }
   
   button {
-    padding: 10px;
+    display: block;
+    margin: 20px auto; /* Centrar el botón horizontalmente */
+  padding: 12px 24px; /* Aumenta el tamaño del botón */
     background-color: #03045E;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-family: serif;
+    
   }
   
   button:hover {
     background-color: #0056b3;
-    font-family: sans-serif;
+    font-family: serif;
   }
   
   p {

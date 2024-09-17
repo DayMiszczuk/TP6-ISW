@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import './PublicarPedido.css';
 
 const PublicarPedido = () => {
@@ -27,7 +28,9 @@ const PublicarPedido = () => {
 
 const [localidadesRetiro, setLocalidadesRetiro] = useState([]);
 const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
-  const [error, setError] = useState('');
+const [error, setError] = useState('');
+const [formValid, setFormValid] = useState(false);
+
   const maxObservaciones = 150;
   const maxReferencia = 150;
 
@@ -52,6 +55,28 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
     "Alta Gracia", "Río Tercero", "Cosquín", "Jesús María", "La Falda"
   ];
   //esto
+  const validateForm = () => {
+    const { tipoCarga, calleRetiro, numeroRetiro, localidadRetiro, provinciaRetiro, fechaRetiro, calleEntrega, numeroEntrega, localidadEntrega, provinciaEntrega, fechaEntrega } = formData;
+
+    if (
+      tipoCarga &&
+      calleRetiro &&
+      numeroRetiro &&
+      localidadRetiro &&
+      provinciaRetiro &&
+      fechaRetiro &&
+      calleEntrega &&
+      numeroEntrega &&
+      localidadEntrega &&
+      provinciaEntrega &&
+      fechaEntrega
+    ) {
+      setFormValid(true);
+    } else {
+      setFormValid(false);
+    }
+  };
+
   // Manejar el cambio de la provincia y actualizar localidades
   const handleProvinceChangeRetiro = (e) => {
     const { name, value } = e.target;
@@ -76,6 +101,7 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
 
     setLocalidadesRetiro(newLocalidades);
     setFormData({ ...formData, [name]: value, localidadRetiro: '' });
+    validateForm();
   };
 
 
@@ -103,6 +129,7 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
 
     setLocalidadesEntrega(newLocalidades);
     setFormData({ ...formData, [name]: value, localidadEntrega: '' });
+    validateForm();
   };
 
   const handleChange = (e) => {
@@ -125,6 +152,7 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
       ...formData,
       [name]: value,
     });
+    validateForm();
   };
 
   const handleFileChange = (e) => {
@@ -150,10 +178,17 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
       ...formData,
       fotos: files,
     });
+
+    validateForm();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!formValid) {
+      setError('Por favor, completa todos los campos obligatorios antes de publicar.');
+      return;
+    }
 
     toast.success('Pedido publicado con éxito!', {
       position: "top-right",
@@ -188,9 +223,21 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
     // Limpiar las localidades seleccionadas
     setLocalidadesRetiro([]);
     setLocalidadesEntrega([]);
+    setError('');
+    setFormValid(false);
   };
 
   return (
+
+    <div className="form-page">
+    <div className="header">
+      {/* Logo */}
+     
+      
+      {/* Título */}
+      <h1>Publicar Pedido</h1>
+    </div>
+
     <form className="form-container" onSubmit={handleSubmit}>
       <div className="form-group">
         <label>Tipo de carga: <span>*</span></label>
@@ -340,9 +387,10 @@ const [localidadesEntrega, setLocalidadesEntrega] = useState([]);
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <button type="submit">Publicar Pedido</button>
+      <button type="submit" disabled={!formValid}>Publicar Pedido</button>
       <ToastContainer />
     </form>
+    </div>
   );
 };
 
