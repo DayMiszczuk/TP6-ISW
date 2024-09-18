@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import logo from './logo.png';
 
 import './PublicarPedido.css';
 
@@ -55,6 +56,8 @@ const [formValid, setFormValid] = useState(false);
     "Alta Gracia", "Río Tercero", "Cosquín", "Jesús María", "La Falda"
   ];
   //esto
+
+  const fileInputRef = useRef(null);
   const validateForm = () => {
     const { tipoCarga, calleRetiro, numeroRetiro, localidadRetiro, provinciaRetiro, fechaRetiro, calleEntrega, numeroEntrega, localidadEntrega, provinciaEntrega, fechaEntrega } = formData;
 
@@ -73,7 +76,10 @@ const [formValid, setFormValid] = useState(false);
     ) {
       setFormValid(true);
     } else {
+
       setFormValid(false);
+      
+      
     }
   };
 
@@ -148,6 +154,8 @@ const [formValid, setFormValid] = useState(false);
       return;
     }
 
+
+
     setFormData({
       ...formData,
       [name]: value,
@@ -185,14 +193,11 @@ const [formValid, setFormValid] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formValid) {
-      setError('Por favor, completa todos los campos obligatorios antes de publicar.');
-      return;
-    }
-
+    
+    // Si la validación pasa, procede con la publicación
     toast.success('Pedido publicado con éxito!', {
       position: "top-right",
-      autoClose: 3000, // Cierra después de 3 segundos
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -225,6 +230,10 @@ const [formValid, setFormValid] = useState(false);
     setLocalidadesEntrega([]);
     setError('');
     setFormValid(false);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -233,7 +242,7 @@ const [formValid, setFormValid] = useState(false);
     <div className="header">
       {/* Logo */}
      
-      
+      <img src={logo} alt="Logo" className="logo" />
       {/* Título */}
       <h1>Publicar Pedido</h1>
     </div>
@@ -387,7 +396,7 @@ const [formValid, setFormValid] = useState(false);
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <button type="submit" disabled={!formValid}>Publicar Pedido</button>
+      <button type="submit">Publicar Pedido</button>
       <ToastContainer />
     </form>
     </div>
